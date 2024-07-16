@@ -21,11 +21,11 @@ public class GenreService {
         this.genreRepository = genreRepository;
     }
 
-    public List<GenreOutputDto> getAllGenres(){
+    public List<GenreOutputDto> getAllGenres() {
         Genre g = new Genre();
         List<Genre> allGenres = genreRepository.findAll();
         List<GenreOutputDto> allGenresOutputList = new ArrayList<>();
-        for(Genre genre: allGenres){
+        for (Genre genre : allGenres) {
             allGenresOutputList.add(GenreMapper.fromModelToOutputDto(genre));
         }
         return allGenresOutputList;
@@ -36,36 +36,35 @@ public class GenreService {
         return GenreMapper.fromModelToOutputDto(g);
     }
 
-    public GenreOutputDto getGenreById(long id){
+    public GenreOutputDto getGenreById(long id) {
         Optional<Genre> g = genreRepository.findById(id);
-        if(g.isPresent()){
+        if (g.isPresent()) {
             return GenreMapper.fromModelToOutputDto(g.get());
         } else {
             throw new RecordNotFoundException("No genre with this id was found");
         }
     }
 
-    public GenreOutputDto updateGenre(long id, GenreInputDto genreInputDto){
+    public GenreOutputDto updateGenre(long id, GenreInputDto genreInputDto) {
         Optional<Genre> g = genreRepository.findById(id);
-        if(g.isPresent()){
+        if (g.isPresent()) {
             g.get().setName(genreInputDto.getName());
             g.get().setDescription(genreInputDto.getDescription());
             g.get().setListOfGames(genreInputDto.getListOfGames());
             genreRepository.save(g.get());
             return GenreMapper.fromModelToOutputDto(g.get());
-        }else {
+        } else {
             throw new RecordNotFoundException("No genres with id " + id + " found");
         }
     }
 
-    public String deleteGenre(long id){
-        Optional<Genre> g = genreRepository.findById(id){
-            if(g.isPresent()){
-                genreRepository.delete(g.get());
-                return "Genre with id " +id+ " has been removed";
-            } else {
-                throw new RecordNotFoundException("No genres with id " + id + " found");
-            }
+    public String deleteGenre(long id) {
+        Optional<Genre> g = genreRepository.findById(id);
+        if (g.isPresent()) {
+            genreRepository.delete(g.get());
+            return "Genre with id " + id + " has been removed";
+        } else {
+            throw new RecordNotFoundException("No genres with id " + id + " found");
         }
     }
 }
