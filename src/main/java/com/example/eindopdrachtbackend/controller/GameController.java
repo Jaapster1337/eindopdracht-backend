@@ -45,7 +45,7 @@ public class GameController {
         return ResponseEntity.ok().body(gameService.updateGame(id, game));
     }
 
-    @PutMapping("/{gameId/publisher}")
+    @PutMapping("/{gameId}/publisher")
     public ResponseEntity<Void> assignPublisherToGame(@PathVariable Long gameId, @RequestBody IdInputDto publisherId){
         Long longPublisherId = publisherId.id;
         gameService.assignPublisherToGame(gameId, longPublisherId);
@@ -59,6 +59,12 @@ public class GameController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{gameId}/genre")
+    public ResponseEntity<Void> assignGenreToGame(@PathVariable Long gameId, @RequestBody IdInputDto genreId){
+        Long longGenreId = genreId.id;
+        gameService.assingGenreToGame(gameId, longGenreId);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGame(@PathVariable int id){

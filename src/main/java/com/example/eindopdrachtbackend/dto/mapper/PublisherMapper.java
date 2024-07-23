@@ -8,7 +8,7 @@ public class PublisherMapper {
 
     public static Publisher fromInputDtoToModel(PublisherInputDto publisherInputDto){
         Publisher p = new Publisher();
-        p.setName(p.getName());
+        p.setName(publisherInputDto.getName());
         p.setCreationDate(publisherInputDto.getCreationDate());
         p.setDescription(publisherInputDto.getDescription());
         p.setListOfGame(publisherInputDto.getListOfGame());
@@ -18,6 +18,7 @@ public class PublisherMapper {
     public static PublisherOutputDto fromModelToOutPutDto(Publisher publisher){
         PublisherOutputDto publisherOutputDto = new PublisherOutputDto();
         publisherOutputDto.setId(publisher.getId());
+        publisherOutputDto.setName(publisher.getName());
         publisherOutputDto.setCreationDate(publisher.getCreationDate());
         publisherOutputDto.setDescription(publisher.getDescription());
         publisherOutputDto.setListOfGame(publisher.getListOfGame());

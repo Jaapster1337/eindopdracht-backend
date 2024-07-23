@@ -8,17 +8,18 @@ public class GenreMapper {
 
     public static Genre fromInputDtoToModel(GenreInputDto genreInputDto){
         Genre g = new Genre();
-        g.setName(g.getName());
-        g.setDescription(g.getDescription());
-        g.setListOfGames(g.getListOfGames());
+        g.setName(genreInputDto.getName());
+        g.setDescription(genreInputDto.getDescription());
+        g.setListOfGames(genreInputDto.getListOfGames());
         return g;
     }
 
     public static GenreOutputDto fromModelToOutputDto(Genre genre){
         GenreOutputDto genreOutputDto = new GenreOutputDto();
         genreOutputDto.setId(genre.getId());
+        genreOutputDto.setName(genre.getName());
         genreOutputDto.setDescription(genre.getDescription());
-        genreOutputDto.setListOfGames(genreOutputDto.getListOfGames());
+        genreOutputDto.setListOfGames(genre.getListOfGames());
         return genreOutputDto;
     }
 }

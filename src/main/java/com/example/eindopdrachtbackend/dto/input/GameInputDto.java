@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 public class GameInputDto {
     private String name;
-    private Publisher publisher;
-    private List<Genre> genre;
+    private Long publisherId;
+    private List<Long> genreId;
     private Long likes;
     private List<Comment> listOfComments;
     private List<User> listOfFavorites;
