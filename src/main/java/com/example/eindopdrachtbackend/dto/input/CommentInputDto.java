@@ -11,9 +11,10 @@ import java.time.LocalDate;
 @Setter
 public class CommentInputDto {
 
-    private User user;
+    private Long userId;
     private String content;
     private LocalDate postDate;
     private Long amountOfLikes;
-    private Game game;
+    private Long gameId;
+
 }
