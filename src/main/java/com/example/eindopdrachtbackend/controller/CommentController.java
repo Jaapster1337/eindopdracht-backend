@@ -27,7 +27,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentOutputDto> createComment(@Valid @RequestBody CommentInputDto commentInputDto){
         CommentOutputDto commentOutputDto = commentService.createComment(commentInputDto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(commentOutputDto.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(commentOutputDto.getUserId()).toUri();
         return ResponseEntity.created(uri).body(commentOutputDto);
     }
 

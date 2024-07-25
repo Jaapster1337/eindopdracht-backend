@@ -8,22 +8,24 @@ import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.User;
 import com.example.eindopdrachtbackend.repository.GameRepository;
 import com.example.eindopdrachtbackend.repository.UserRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+@Component
 
 public class CommentMapper {
 
-    private final UserRepository userRepository;
-    private final GameRepository gameRepository;
+    private static UserRepository userRepository;
+    private static GameRepository gameRepository;
 
     public CommentMapper(UserRepository userRepository, GameRepository gameRepository) {
-        this.userRepository = userRepository;
-        this.gameRepository = gameRepository;
+        CommentMapper.userRepository = userRepository;
+        CommentMapper.gameRepository = gameRepository;
     }
 
-    public static Comment fromInputDtoToModel(CommentInputDto commentInputDto, UserRepository userRepository, GameRepository gameRepository){
+    public static Comment fromInputDtoToModel(CommentInputDto commentInputDto){
         Comment c = new Comment();
-        Optional<User> user = userRepository.findById(commentInputDto.getUserId());
+        Optional<User> user = userRepository.findUserByUsername(commentInputDto.getUserId());
         if(user.isPresent()) {
             c.setUser(user.get());
         } else {
@@ -45,8 +47,7 @@ public class CommentMapper {
 
     public static CommentOutputDto fromModelToOutputDto(Comment comment){
         CommentOutputDto commentOutputDto = new CommentOutputDto();
-        commentOutputDto.setId(comment.getId());
-        commentOutputDto.setUserId(comment.getUser().getId());
+        commentOutputDto.setUserId(comment.getUser().getUsername());
         commentOutputDto.setContent(comment.getContent());
         commentOutputDto.setPostDate(comment.getPostDate());
         commentOutputDto.setAmountOfLikes(comment.getAmountOfLikes());

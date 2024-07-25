@@ -56,7 +56,7 @@ public class CommentService {
     public CommentOutputDto updateComment(long id, CommentInputDto commentInputDto){
         Optional<Comment> c = commentRepository.findById(id);
         if(c.isPresent()){
-            Optional<User> userOpt = userRepository.findById(commentInputDto.getUserId());
+            Optional<User> userOpt = userRepository.findUserByUsername(commentInputDto.getUserId());
             if(userOpt.isPresent()){
                 c.get().setUser(userOpt.get());
             } else {

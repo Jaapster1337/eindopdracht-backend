@@ -7,8 +7,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class CommentOutputDto {
-    private Long id;
-    private Long userId;
+    private String userId;
     private String content;
     private LocalDate postDate;
     private Long amountOfLikes;

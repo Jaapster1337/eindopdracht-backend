@@ -18,7 +18,7 @@ public class User {
     private String username;
     @Column(nullable = false, length = 255)
     private String password;
-
+    private String email;
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
