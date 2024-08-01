@@ -5,7 +5,11 @@ import com.example.eindopdrachtbackend.dto.mapper.CommentMapper;
 import com.example.eindopdrachtbackend.dto.output.CommentOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Comment;
+import com.example.eindopdrachtbackend.model.Game;
+import com.example.eindopdrachtbackend.model.User;
 import com.example.eindopdrachtbackend.repository.CommentRepository;
+import com.example.eindopdrachtbackend.repository.GameRepository;
+import com.example.eindopdrachtbackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +19,13 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final GameRepository gameRepository;
 
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, GameRepository gameRepository) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
+        this.gameRepository = gameRepository;
     }
 
     public List<CommentOutputDto> getAllComments(){
@@ -37,7 +45,7 @@ public class CommentService {
     }
 
     public CommentOutputDto getCommentById(long id){
-        Optional<Comment> c =commentRepository.findById(id);
+        Optional<Comment> c = commentRepository.findById(id);
         if(c.isPresent()){
             return CommentMapper.fromModelToOutputDto(c.get());
         } else {
@@ -48,11 +56,21 @@ public class CommentService {
     public CommentOutputDto updateComment(long id, CommentInputDto commentInputDto){
         Optional<Comment> c = commentRepository.findById(id);
         if(c.isPresent()){
-            c.get().setUser(commentInputDto.getUser());
+            Optional<User> userOpt = userRepository.findUserByUsername(commentInputDto.getUserId());
+            if(userOpt.isPresent()){
+                c.get().setUser(userOpt.get());
+            } else {
+                throw new RecordNotFoundException("No User with this id was found");
+            }
             c.get().setContent(commentInputDto.getContent());
             c.get().setPostDate(commentInputDto.getPostDate());
             c.get().setAmountOfLikes(commentInputDto.getAmountOfLikes());
-            c.get().setGame(commentInputDto.getGame());
+            Optional<Game> gameOpt = gameRepository.findById(commentInputDto.getGameId());
+            if(gameOpt.isPresent()){
+                c.get().setGame(gameOpt.get());
+            }else {
+                throw new RecordNotFoundException("No Game with this id was found");
+            }
             commentRepository.save(c.get());
             return CommentMapper.fromModelToOutputDto(c.get());
         } else {

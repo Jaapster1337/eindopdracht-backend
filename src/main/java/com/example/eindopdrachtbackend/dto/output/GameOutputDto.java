@@ -14,8 +14,8 @@ import java.util.List;
 public class GameOutputDto {
     private Long id;
     private String name;
-    private Publisher publisher;
-    private List<Genre> genre;
+    private Long publisherId;
+    private List<Long> genreId;
     private Long likes;
     private List<Comment> listOfComments;
     private List<User> listOfFavorites;

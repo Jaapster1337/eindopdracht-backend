@@ -6,12 +6,15 @@ import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Comment;
 import com.example.eindopdrachtbackend.model.Game;
+import com.example.eindopdrachtbackend.model.Genre;
 import com.example.eindopdrachtbackend.model.Publisher;
 import com.example.eindopdrachtbackend.repository.CommentRepository;
 import com.example.eindopdrachtbackend.repository.GameRepository;
+import com.example.eindopdrachtbackend.repository.GenreRepository;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +24,13 @@ public class GameService {
     private final GameRepository gameRepository;
     private final PublisherRepository publisherRepository;
     private final CommentRepository commentRepository;
+    private final GenreRepository genreRepository;
 
-    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository, CommentRepository commentRepository) {
+    public GameService(GameRepository gameRepository, PublisherRepository publisherRepository, CommentRepository commentRepository, GenreRepository genreRepository) {
         this.gameRepository = gameRepository;
         this.publisherRepository = publisherRepository;
         this.commentRepository = commentRepository;
+        this.genreRepository = genreRepository;
     }
 
     public List<GameOutputDto> getAllGames(){
@@ -39,7 +44,22 @@ public class GameService {
     }
 
     public GameOutputDto createGame(GameInputDto gameInputDto){
-        Game g = gameRepository.save(GameMapper.fromInputDtoToModel(gameInputDto));
+        Optional<Publisher> p = publisherRepository.findById(gameInputDto.getPublisherId());
+
+        Game game = GameMapper.fromInputDtoToModel(gameInputDto);
+        if(p.isPresent()){
+            game.setPublisher(p.get());
+        }
+
+        List<Genre> genres = new ArrayList<>();
+        for(Long genreId: gameInputDto.getGenreId()){
+            Optional<Genre> genreOpt = genreRepository.findById(genreId);
+            genreOpt.ifPresent(genres::add);
+        }
+        game.setGenre(genres);
+
+
+        Game g = gameRepository.save(game);
         return GameMapper.fromModelToOutputDto(g);
     }
 
@@ -56,8 +76,8 @@ public class GameService {
         Optional<Game> g = gameRepository.findById(id);
         if(g.isPresent()){
             g.get().setName(gameInputDto.getName());
-            g.get().setPublisher(gameInputDto.getPublisher());
-            g.get().setGenre(gameInputDto.getGenre());
+//            g.get().setPublisher(gameInputDto.getPublisher());
+//            g.get().setGenre(gameInputDto.getGenre());
             g.get().setLikes(gameInputDto.getLikes());
             g.get().setListOfComments(gameInputDto.getListOfComments());
             g.get().setListOfFavorites(gameInputDto.getListOfFavorites());
@@ -105,6 +125,22 @@ public class GameService {
             return "Comment "+commentId+" has been added to game "+gameId;
         } else {
             throw new RecordNotFoundException("No game or comment with that id has been found");
+        }
+    }
+
+    public String assingGenreToGame(Long gameId, Long genreId){
+        Optional<Game> ga = gameRepository.findById(gameId);
+        Optional<Genre> ge = genreRepository.findById(genreId);
+        if (ga.isPresent() && ge.isPresent()){
+            Game game = ga.get();
+            Genre genre = ge.get();
+            List<Genre> genreList = game.getGenre();
+            genreList.add(genre);
+            game.setGenre(genreList);
+            gameRepository.save(game);
+            return "Comment "+genreId+" has been added to game "+gameId;
+        }else{
+            throw new RecordNotFoundException("No game or genre with that id has been found");
         }
     }
 }
