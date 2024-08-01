@@ -57,8 +57,7 @@ public class GameService {
             genreOpt.ifPresent(genres::add);
         }
         game.setGenre(genres);
-
-
+        game.setLikes(0L);
         Game g = gameRepository.save(game);
         return GameMapper.fromModelToOutputDto(g);
     }
@@ -75,14 +74,15 @@ public class GameService {
     public GameOutputDto updateGame(long id, GameInputDto gameInputDto){
         Optional<Game> g = gameRepository.findById(id);
         if(g.isPresent()){
-            g.get().setName(gameInputDto.getName());
-//            g.get().setPublisher(gameInputDto.getPublisher());
-//            g.get().setGenre(gameInputDto.getGenre());
-            g.get().setLikes(gameInputDto.getLikes());
-            g.get().setListOfComments(gameInputDto.getListOfComments());
-            g.get().setListOfFavorites(gameInputDto.getListOfFavorites());
-            gameRepository.save(g.get());
-            return GameMapper.fromModelToOutputDto(g.get());
+            Game game = g.get();
+            game.setName(gameInputDto.getName());
+//            game.setPublisher(gameInputDto.getPublisher());
+//            game.setGenre(gameInputDto.getGenre());
+            game.setLikes(gameInputDto.getLikes());
+            game.setListOfComments(gameInputDto.getListOfComments());
+            game.setListOfFavorites(gameInputDto.getListOfFavorites());
+            gameRepository.save(game);
+            return GameMapper.fromModelToOutputDto(game);
         } else {
             throw new RecordNotFoundException("No game with id " + id +" found");
         }

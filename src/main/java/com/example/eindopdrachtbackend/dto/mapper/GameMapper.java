@@ -22,7 +22,9 @@ public class GameMapper {
         GameOutputDto gameOutputDto = new GameOutputDto();
         gameOutputDto.setId(game.getId());
         gameOutputDto.setName(game.getName());
-        gameOutputDto.setPublisherId(game.getPublisher().getId());
+        if (game.getPublisher() != null){
+            gameOutputDto.setPublisherId(game.getPublisher().getId());
+        }
         List<Long> genreIds = new ArrayList<>();
         for(Genre genre: game.getGenre()){
             genreIds.add(genre.getId());

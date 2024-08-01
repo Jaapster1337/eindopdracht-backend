@@ -43,6 +43,11 @@ public class UserController {
 
     @PutMapping("/{username}")
     public ResponseEntity<UserSelfProfileDto> updateUser(@PathVariable String username, @RequestBody UserInputDto user){
-        return ResponseEntity.ok().body(userService.upda(username, user));
+        return ResponseEntity.ok().body(userService.updateTv(username, user));
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<String> deleteUser(@PathVariable String username){
+        return ResponseEntity.ok().body(userService.deleteUser(username));
     }
 }

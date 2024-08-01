@@ -57,22 +57,23 @@ public class CommentService {
         Optional<Comment> c = commentRepository.findById(id);
         if(c.isPresent()){
             Optional<User> userOpt = userRepository.findUserByUsername(commentInputDto.getUserId());
+            Comment comment = c.get();
             if(userOpt.isPresent()){
-                c.get().setUser(userOpt.get());
+                comment.setUser(userOpt.get());
             } else {
                 throw new RecordNotFoundException("No User with this id was found");
             }
-            c.get().setContent(commentInputDto.getContent());
-            c.get().setPostDate(commentInputDto.getPostDate());
-            c.get().setAmountOfLikes(commentInputDto.getAmountOfLikes());
+            comment.setContent(commentInputDto.getContent());
+            comment.setPostDate(commentInputDto.getPostDate());
+            comment.setAmountOfLikes(commentInputDto.getAmountOfLikes());
             Optional<Game> gameOpt = gameRepository.findById(commentInputDto.getGameId());
             if(gameOpt.isPresent()){
-                c.get().setGame(gameOpt.get());
+                comment.setGame(gameOpt.get());
             }else {
                 throw new RecordNotFoundException("No Game with this id was found");
             }
-            commentRepository.save(c.get());
-            return CommentMapper.fromModelToOutputDto(c.get());
+            commentRepository.save(comment);
+            return CommentMapper.fromModelToOutputDto(comment);
         } else {
             throw new RecordNotFoundException("no comments with "+id+" found");
         }
