@@ -45,6 +45,11 @@ public class GameController {
         return ResponseEntity.ok().body(gameService.updateGame(id, game));
     }
 
+    @PutMapping("likes/{id}")
+    public ResponseEntity<String> updateLikes(@PathVariable int id){
+        return ResponseEntity.ok().body(gameService.updateLikes(id));
+    }
+
     @PutMapping("/{gameId}/publisher")
     public ResponseEntity<Void> assignPublisherToGame(@PathVariable Long gameId, @RequestBody IdInputDto publisherId){
         Long longPublisherId = publisherId.id;

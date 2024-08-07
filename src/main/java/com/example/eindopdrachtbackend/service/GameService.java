@@ -76,8 +76,27 @@ public class GameService {
         if(g.isPresent()){
             Game game = g.get();
             game.setName(gameInputDto.getName());
-//            game.setPublisher(gameInputDto.getPublisher());
-//            game.setGenre(gameInputDto.getGenre());
+            Optional<Publisher> publisher = publisherRepository.findById(gameInputDto.getPublisherId());
+            if (publisher.isPresent()) {
+                game.setPublisher(publisher.get());
+            } else{
+                game.setPublisher(g.get().getPublisher());
+            }
+            //check of InputDto genre heeft
+            if(!gameInputDto.getGenreId().isEmpty()){
+                List<Genre> genreList = new ArrayList<>();
+                List<Long> genres = gameInputDto.getGenreId();
+                for(Long genreId: genres){
+                    Optional<Genre> specificGenre = genreRepository.findById(genreId);
+                    if (specificGenre.isPresent()){
+                        genreList.add(specificGenre.get());
+                    } else {
+                        throw new RecordNotFoundException("No genre was found");
+                    }
+                }
+                game.setGenre(genreList);
+            }
+
             game.setLikes(gameInputDto.getLikes());
             game.setListOfComments(gameInputDto.getListOfComments());
             game.setListOfFavorites(gameInputDto.getListOfFavorites());
@@ -87,6 +106,21 @@ public class GameService {
             throw new RecordNotFoundException("No game with id " + id +" found");
         }
     }
+
+    public String updateLikes(long id){
+        Optional<Game> g = gameRepository.findById(id);
+        if (g.isPresent()){
+            Game game = g.get();
+            Long likes = game.getLikes();
+            likes++;
+            game.setLikes(likes);
+            gameRepository.save(game);
+            return "Game with id "+id+" now has "+ game.getLikes() + " likes";
+        } else {
+            throw new RecordNotFoundException("No game with id " + id +" found");
+        }
+    }
+
 
     public String deleteGame(long id){
         Optional<Game> g = gameRepository.findById(id);

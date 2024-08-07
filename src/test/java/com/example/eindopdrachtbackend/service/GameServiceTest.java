@@ -18,10 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -53,11 +50,11 @@ class GameServiceTest {
         // genre setup
         Genre genre = new Genre();
         genre.setName("Simulation");
-        genre.setId(1l);
+        genre.setId(1L);
 
         Genre genre2 = new Genre();
-        genre.setName("Deck builders");
-        genre.setId(2l);
+        genre2.setName("Deck builders");
+        genre2.setId(2L);
 
         genres.add(genre);
         genres.add(genre2);
@@ -140,18 +137,34 @@ class GameServiceTest {
     void updateGame() {
         //arrange
         when(gameRepository.findById(anyLong())).thenReturn(Optional.of(game1));
+        when(publisherRepository.findById(anyLong())).thenReturn(Optional.of(publisher1));
+        when(genreRepository.findById(anyLong())).thenReturn(Optional.of(genres.get(0))).thenReturn(Optional.of(genres.get(1)));
+        GameInputDto gid = new GameInputDto();
+        gid.setName("Dark Souls");
+        gid.setPublisherId(2L);
+        gid.setGenreId(Arrays.asList(1L, 2L));
         //act
-        GameOutputDto gameOutputDto = gameService.getGameById(1L);
-        gameOutputDto.setName("Call Of Duty");
+        GameOutputDto gameOutputDto = gameService.updateGame(1L,gid);
 
         //assert
+        assertEquals("Dark Souls", gameOutputDto.getName());
+        assertEquals(1L, gameOutputDto.getPublisherId());
+        assertEquals(Arrays.asList(1L, 2L), gameOutputDto.getGenreId());
     }
 
     @Test
+    @DisplayName("Should delete game")
     void deleteGame() {
-        //arrange
-        //act
-        //assert
+        // Arrange
+        Game game1 = new Game(); // Assuming Game is your entity
+        when(gameRepository.findById(anyLong())).thenReturn(Optional.of(game1));
+
+        // Act
+        String result = gameService.deleteGame(1L);
+
+        // Assert
+        verify(gameRepository, times(1)).delete(game1);
+        assertEquals("Game with id 1 has been removed", result);
     }
 
     @Test

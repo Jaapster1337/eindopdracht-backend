@@ -12,5 +12,5 @@ public class GenreOutputDto {
     private Long id;
     private String name;
     private String description;
-    private List<Game> listOfGames;
+    private List<GameOutputDto> listOfGames;
 }

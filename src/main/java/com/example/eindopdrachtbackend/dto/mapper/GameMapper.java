@@ -35,4 +35,13 @@ public class GameMapper {
         gameOutputDto.setListOfFavorites(game.getListOfFavorites());
         return gameOutputDto;
     }
+
+    public static List<GameOutputDto> fromListToOutputDtoList(List<Game> games){
+        List<GameOutputDto> gameOutputDtos = new ArrayList<>();
+        for (Game g : games){
+            gameOutputDtos.add(fromModelToOutputDto(g));
+        }
+        return gameOutputDtos;
+
+    }
 }
