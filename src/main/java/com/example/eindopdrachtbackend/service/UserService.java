@@ -8,7 +8,6 @@ import com.example.eindopdrachtbackend.dto.output.UserSelfProfileDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.User;
 import com.example.eindopdrachtbackend.repository.UserRepository;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

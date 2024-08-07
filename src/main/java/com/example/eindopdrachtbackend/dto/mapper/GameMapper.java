@@ -22,7 +22,9 @@ public class GameMapper {
         GameOutputDto gameOutputDto = new GameOutputDto();
         gameOutputDto.setId(game.getId());
         gameOutputDto.setName(game.getName());
-        gameOutputDto.setPublisherId(game.getPublisher().getId());
+        if (game.getPublisher() != null){
+            gameOutputDto.setPublisherId(game.getPublisher().getId());
+        }
         List<Long> genreIds = new ArrayList<>();
         for(Genre genre: game.getGenre()){
             genreIds.add(genre.getId());
@@ -32,5 +34,14 @@ public class GameMapper {
         gameOutputDto.setListOfComments(game.getListOfComments());
         gameOutputDto.setListOfFavorites(game.getListOfFavorites());
         return gameOutputDto;
+    }
+
+    public static List<GameOutputDto> fromListToOutputDtoList(List<Game> games){
+        List<GameOutputDto> gameOutputDtos = new ArrayList<>();
+        for (Game g : games){
+            gameOutputDtos.add(fromModelToOutputDto(g));
+        }
+        return gameOutputDtos;
+
     }
 }

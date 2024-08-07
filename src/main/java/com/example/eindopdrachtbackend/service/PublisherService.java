@@ -48,12 +48,13 @@ public class PublisherService {
     public PublisherOutputDto updatePublisher(long id, PublisherInputDto publisherInputDto){
         Optional<Publisher> p = publisherRepository.findById(id);
         if(p.isPresent()) {
-           p.get().setName(publisherInputDto.getName());
-           p.get().setCreationDate(publisherInputDto.getCreationDate());
-           p.get().setDescription(publisherInputDto.getDescription());
-           p.get().setListOfGame(publisherInputDto.getListOfGame());
-           publisherRepository.save(p.get());
-           return PublisherMapper.fromModelToOutPutDto(p.get());
+           Publisher publisher = p.get();
+           publisher.setName(publisherInputDto.getName());
+           publisher.setCreationDate(publisherInputDto.getCreationDate());
+           publisher.setDescription(publisherInputDto.getDescription());
+           publisher.setListOfGame(publisherInputDto.getListOfGame());
+           publisherRepository.save(publisher);
+           return PublisherMapper.fromModelToOutPutDto(publisher);
         } else {
             throw new RecordNotFoundException("No publisher with id " + id + " found");
         }

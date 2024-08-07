@@ -48,11 +48,12 @@ public class GenreService {
     public GenreOutputDto updateGenre(long id, GenreInputDto genreInputDto) {
         Optional<Genre> g = genreRepository.findById(id);
         if (g.isPresent()) {
-            g.get().setName(genreInputDto.getName());
-            g.get().setDescription(genreInputDto.getDescription());
-            g.get().setListOfGames(genreInputDto.getListOfGames());
-            genreRepository.save(g.get());
-            return GenreMapper.fromModelToOutputDto(g.get());
+            Genre genre = g.get();
+            genre.setName(genreInputDto.getName());
+            genre.setDescription(genreInputDto.getDescription());
+            genre.setListOfGames(genreInputDto.getListOfGames());
+            genreRepository.save(genre);
+            return GenreMapper.fromModelToOutputDto(genre);
         } else {
             throw new RecordNotFoundException("No genres with id " + id + " found");
         }

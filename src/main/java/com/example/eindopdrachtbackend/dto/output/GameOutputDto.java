@@ -18,5 +18,5 @@ public class GameOutputDto {
     private List<Long> genreId;
     private Long likes;
     private List<Comment> listOfComments;
-    private List<User> listOfFavorites;
+    private int amountOfFavorites; // Zorgen dat de repository de hoeveelheid gebruikers ophaalt ipv de lijst (zelf scriptje voor schrijven)
 }

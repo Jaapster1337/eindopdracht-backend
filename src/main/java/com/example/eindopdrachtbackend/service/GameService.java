@@ -57,8 +57,7 @@ public class GameService {
             genreOpt.ifPresent(genres::add);
         }
         game.setGenre(genres);
-
-
+        game.setLikes(0L);
         Game g = gameRepository.save(game);
         return GameMapper.fromModelToOutputDto(g);
     }
@@ -75,18 +74,53 @@ public class GameService {
     public GameOutputDto updateGame(long id, GameInputDto gameInputDto){
         Optional<Game> g = gameRepository.findById(id);
         if(g.isPresent()){
-            g.get().setName(gameInputDto.getName());
-//            g.get().setPublisher(gameInputDto.getPublisher());
-//            g.get().setGenre(gameInputDto.getGenre());
-            g.get().setLikes(gameInputDto.getLikes());
-            g.get().setListOfComments(gameInputDto.getListOfComments());
-            g.get().setListOfFavorites(gameInputDto.getListOfFavorites());
-            gameRepository.save(g.get());
-            return GameMapper.fromModelToOutputDto(g.get());
+            Game game = g.get();
+            game.setName(gameInputDto.getName());
+            Optional<Publisher> publisher = publisherRepository.findById(gameInputDto.getPublisherId());
+            if (publisher.isPresent()) {
+                game.setPublisher(publisher.get());
+            } else{
+                game.setPublisher(g.get().getPublisher());
+            }
+            //check of InputDto genre heeft
+            if(!gameInputDto.getGenreId().isEmpty()){
+                List<Genre> genreList = new ArrayList<>();
+                List<Long> genres = gameInputDto.getGenreId();
+                for(Long genreId: genres){
+                    Optional<Genre> specificGenre = genreRepository.findById(genreId);
+                    if (specificGenre.isPresent()){
+                        genreList.add(specificGenre.get());
+                    } else {
+                        throw new RecordNotFoundException("No genre was found");
+                    }
+                }
+                game.setGenre(genreList);
+            }
+
+            game.setLikes(gameInputDto.getLikes());
+            game.setListOfComments(gameInputDto.getListOfComments());
+            game.setListOfFavorites(gameInputDto.getListOfFavorites());
+            gameRepository.save(game);
+            return GameMapper.fromModelToOutputDto(game);
         } else {
             throw new RecordNotFoundException("No game with id " + id +" found");
         }
     }
+
+    public String updateLikes(long id){
+        Optional<Game> g = gameRepository.findById(id);
+        if (g.isPresent()){
+            Game game = g.get();
+            Long likes = game.getLikes();
+            likes++;
+            game.setLikes(likes);
+            gameRepository.save(game);
+            return "Game with id "+id+" now has "+ game.getLikes() + " likes";
+        } else {
+            throw new RecordNotFoundException("No game with id " + id +" found");
+        }
+    }
+
 
     public String deleteGame(long id){
         Optional<Game> g = gameRepository.findById(id);
