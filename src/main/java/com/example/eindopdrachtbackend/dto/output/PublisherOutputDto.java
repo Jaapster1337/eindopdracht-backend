@@ -15,4 +15,5 @@ public class PublisherOutputDto {
     private String name;
     private LocalDate creationDate;
     private String description;
-    private List<Game> listOfGame;}
+    private List<GameOutputDto> listOfGame;
+}

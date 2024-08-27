@@ -40,7 +40,7 @@ public class PublisherController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherOutputDto> updateGame(@PathVariable int id, @RequestBody PublisherInputDto publisher){
+    public ResponseEntity<PublisherOutputDto> updatePublisher(@PathVariable int id, @RequestBody PublisherInputDto publisher){
         return ResponseEntity.ok().body(publisherService.updatePublisher(id, publisher));
     }
 

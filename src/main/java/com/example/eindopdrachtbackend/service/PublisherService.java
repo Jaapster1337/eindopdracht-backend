@@ -4,6 +4,7 @@ import com.example.eindopdrachtbackend.dto.input.PublisherInputDto;
 import com.example.eindopdrachtbackend.dto.mapper.PublisherMapper;
 import com.example.eindopdrachtbackend.dto.output.PublisherOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
+import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Publisher;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,11 @@ public class PublisherService {
     public String deletePublisher(long id){
         Optional<Publisher> p = publisherRepository.findById(id);
         if(p.isPresent()){
+            Publisher publisher = p.get();
+            List<Game> games = publisher.getListOfGame();
+            for(Game game : games){
+//                game.setPublisher(null);
+            }
             publisherRepository.delete(p.get());
             return "Publisher with id " + id + " has been removed";
         } else {

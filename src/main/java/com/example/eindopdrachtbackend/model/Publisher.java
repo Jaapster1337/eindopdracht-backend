@@ -1,5 +1,6 @@
 package com.example.eindopdrachtbackend.model;
 
+import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,6 @@ public class Publisher {
     private String name;
     private LocalDate creationDate;
     private String description;
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "publisher", orphanRemoval = true)
     private List<Game> listOfGame;
 }

@@ -17,8 +17,8 @@ public class UserOutputDto {
     private String password;
     private String email;
     private String description;
-    private List<Comment> listOfComments;
-    private List<Game> listOfFavorites;
+    private List<CommentOutputDto> listOfComments;
+    private List<GameOutputDto> listOfFavorites;
     @JsonSerialize
     private Set<Authority> authorities;
 }

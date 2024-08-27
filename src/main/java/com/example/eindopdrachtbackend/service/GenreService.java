@@ -4,6 +4,7 @@ import com.example.eindopdrachtbackend.dto.input.GenreInputDto;
 import com.example.eindopdrachtbackend.dto.mapper.GenreMapper;
 import com.example.eindopdrachtbackend.dto.output.GenreOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
+import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Genre;
 import com.example.eindopdrachtbackend.repository.GenreRepository;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,13 @@ public class GenreService {
 
     public String deleteGenre(long id) {
         Optional<Genre> g = genreRepository.findById(id);
+
         if (g.isPresent()) {
+            Genre genre = g.get();
+            List<Game> games = genre.getListOfGames();
+            for(Game game : games){
+                game.getGenre().remove(genre);
+            }
             genreRepository.delete(g.get());
             return "Genre with id " + id + " has been removed";
         } else {

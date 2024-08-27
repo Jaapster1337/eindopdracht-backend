@@ -12,6 +12,6 @@ import java.util.List;
 public class UserProfileDto {
     private String username;
     private String description;
-    private List<Comment> listOfComments;
-    private List<Game> listOfFavorites;
+    private List<CommentOutputDto> listOfComments;
+    private List<GameOutputDto> listOfFavorites;
 }
