@@ -4,11 +4,21 @@ import com.example.eindopdrachtbackend.dto.input.GameInputDto;
 import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Genre;
+import com.example.eindopdrachtbackend.repository.GameRepository;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class GameMapper {
+    private static GameRepository gameRepository;
+
+    public GameMapper(GameRepository gameRepository){
+        this.gameRepository = gameRepository;
+    }
+
     public static Game fromInputDtoToModel(GameInputDto gameInputDto){
         Game g = new Game();
         g.setName(gameInputDto.getName());
@@ -31,8 +41,8 @@ public class GameMapper {
         }
         gameOutputDto.setGenreId(genreIds);
         gameOutputDto.setLikes(game.getLikes());
-        gameOutputDto.setListOfComments(game.getListOfComments());
-        gameOutputDto.setListOfFavorites(game.getListOfFavorites());
+        gameOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(game.getListOfComments()));
+        gameOutputDto.setAmountOfFavorites(gameRepository.countUsersWhoFavoritedGame(game.getId()));
         return gameOutputDto;
     }
 

@@ -10,6 +10,8 @@ import com.example.eindopdrachtbackend.repository.GameRepository;
 import com.example.eindopdrachtbackend.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 @Component
 
@@ -53,5 +55,13 @@ public class CommentMapper {
         commentOutputDto.setAmountOfLikes(comment.getAmountOfLikes());
         commentOutputDto.setGameId(comment.getGame().getId());
         return commentOutputDto;
+    }
+
+    public static List<CommentOutputDto> fromListToOutputDtoList(List<Comment> comments){
+        List<CommentOutputDto> commentOutputDtos = new ArrayList<>();
+        for(Comment comment : comments){
+            commentOutputDtos.add(fromModelToOutputDto(comment));
+        }
+        return commentOutputDtos;
     }
 }

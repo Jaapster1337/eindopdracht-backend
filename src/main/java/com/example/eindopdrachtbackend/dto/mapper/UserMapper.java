@@ -25,8 +25,8 @@ public class UserMapper {
         userOutputDto.setEmail(user.getEmail());
         userOutputDto.setDescription(user.getDescription());
         userOutputDto.setAuthorities(user.getAuthorities());
-        userOutputDto.setListOfComments(user.getListOfComments());
-        userOutputDto.setListOfFavorites(user.getListOfFavorites());
+        userOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(user.getListOfComments()));
+        userOutputDto.setListOfFavorites(GameMapper.fromListToOutputDtoList(user.getListOfFavorites()));
         return userOutputDto;
     }
 
@@ -34,8 +34,8 @@ public class UserMapper {
         UserSelfProfileDto userSelfProfileDto = new UserSelfProfileDto();
         userSelfProfileDto.setUsername(user.getUsername());
         userSelfProfileDto.setDescription(user.getDescription());
-        userSelfProfileDto.setListOfComments(user.getListOfComments());
-        userSelfProfileDto.setListOfFavorites(user.getListOfFavorites());
+        userSelfProfileDto.setListOfComments(CommentMapper.fromListToOutputDtoList(user.getListOfComments()));
+        userSelfProfileDto.setListOfFavorites(GameMapper.fromListToOutputDtoList(user.getListOfFavorites()));
         userSelfProfileDto.setEmail(user.getEmail());
         userSelfProfileDto.setPassword(user.getPassword());
         return userSelfProfileDto;
@@ -45,8 +45,8 @@ public class UserMapper {
         UserProfileDto userProfileDto = new UserProfileDto();
         userProfileDto.setUsername(user.getUsername());
         userProfileDto.setDescription(user.getDescription());
-        userProfileDto.setListOfComments(user.getListOfComments());
-        userProfileDto.setListOfFavorites(user.getListOfFavorites());
+        userProfileDto.setListOfComments(CommentMapper.fromListToOutputDtoList(user.getListOfComments()));
+        userProfileDto.setListOfFavorites(GameMapper.fromListToOutputDtoList(user.getListOfFavorites()));
         return userProfileDto;
     }
 

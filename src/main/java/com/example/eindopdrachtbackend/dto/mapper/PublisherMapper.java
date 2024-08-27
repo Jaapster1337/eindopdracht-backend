@@ -1,10 +1,22 @@
 package com.example.eindopdrachtbackend.dto.mapper;
 
 import com.example.eindopdrachtbackend.dto.input.PublisherInputDto;
+import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.dto.output.PublisherOutputDto;
+import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Publisher;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+@Component
 public class PublisherMapper {
+
+    private static GameMapper gameMapper;
+
+    public PublisherMapper(GameMapper gameMapper) {
+        this.gameMapper = gameMapper;
+    }
 
     public static Publisher fromInputDtoToModel(PublisherInputDto publisherInputDto){
         Publisher p = new Publisher();
@@ -21,7 +33,11 @@ public class PublisherMapper {
         publisherOutputDto.setName(publisher.getName());
         publisherOutputDto.setCreationDate(publisher.getCreationDate());
         publisherOutputDto.setDescription(publisher.getDescription());
-        publisherOutputDto.setListOfGame(publisher.getListOfGame());
+        List<GameOutputDto> gameOutputDtoList = new ArrayList<>();
+        for (Game game : publisher.getListOfGame()) {
+            gameOutputDtoList.add(gameMapper.fromModelToOutputDto(game));
+        }
+        publisherOutputDto.setListOfGame(gameOutputDtoList);
         return publisherOutputDto;
     }
 }

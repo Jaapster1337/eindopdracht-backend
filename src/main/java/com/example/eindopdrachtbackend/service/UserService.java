@@ -6,6 +6,7 @@ import com.example.eindopdrachtbackend.dto.output.UserOutputDto;
 import com.example.eindopdrachtbackend.dto.output.UserProfileDto;
 import com.example.eindopdrachtbackend.dto.output.UserSelfProfileDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
+import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.User;
 import com.example.eindopdrachtbackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -67,8 +68,14 @@ public class UserService {
 
     public String deleteUser(String username){
         Optional<User> u = userRepository.findUserByUsername(username);
+
         if(u.isPresent()){
-            userRepository.delete(u.get());
+            User user = u.get();
+            List<Game> games = user.getListOfFavorites();
+            for (Game game : games){
+                game.getListOfFavorites().remove(user);
+            }
+            userRepository.delete(user);
             return "User with "+ username+" has been removed";
         } else {
             throw new RecordNotFoundException("No user was found");
