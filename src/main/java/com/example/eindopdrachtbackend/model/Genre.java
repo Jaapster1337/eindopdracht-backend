@@ -1,6 +1,7 @@
 package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,10 @@ public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @Column(unique = true)
     private String name;
+    @NotEmpty
     private String description;
     @ManyToMany(mappedBy = "genre")
     private List<Game> listOfGames;
