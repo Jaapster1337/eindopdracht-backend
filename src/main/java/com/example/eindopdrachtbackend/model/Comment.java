@@ -1,6 +1,7 @@
 package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @NotBlank
     private String content;
     private LocalDate postDate;
     private Long amountOfLikes;

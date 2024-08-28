@@ -2,6 +2,7 @@ package com.example.eindopdrachtbackend.model;
 
 import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,8 @@ public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @Column(unique = true)
     private String name;
     private LocalDate creationDate;
     private String description;

@@ -1,6 +1,7 @@
 package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,11 @@ import java.util.List;
 @Table(name = "Games")
 @Entity
 public class Game {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @Column(unique = true)
     private String name;
     @ManyToOne
     @JoinColumn(name = "publisher_id")
