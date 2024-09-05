@@ -4,17 +4,16 @@ import com.example.eindopdrachtbackend.dto.input.GameInputDto;
 import com.example.eindopdrachtbackend.dto.mapper.GameMapper;
 import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
-import com.example.eindopdrachtbackend.model.Comment;
-import com.example.eindopdrachtbackend.model.Game;
-import com.example.eindopdrachtbackend.model.Genre;
-import com.example.eindopdrachtbackend.model.Publisher;
+import com.example.eindopdrachtbackend.model.*;
 import com.example.eindopdrachtbackend.repository.CommentRepository;
 import com.example.eindopdrachtbackend.repository.GameRepository;
 import com.example.eindopdrachtbackend.repository.GenreRepository;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -176,6 +175,17 @@ public class GameService {
         }else{
             throw new RecordNotFoundException("No game or genre with that id has been found");
         }
+    }
+    @Transactional
+    public GameOutputDto addImageToGame(long gameId, Image image){
+        Optional<Game> optionalGame = gameRepository.findById(gameId);
+        if(optionalGame.isEmpty()){
+            throw new RecordNotFoundException("Game with id "+gameId+" not found");
+        }
+        Game game = optionalGame.get();
+        game.setGameCover(image);
+        gameRepository.save(game);
+        return GameMapper.fromModelToOutputDto(game);
     }
 }
 

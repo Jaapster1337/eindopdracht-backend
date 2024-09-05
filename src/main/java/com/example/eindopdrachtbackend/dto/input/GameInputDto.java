@@ -1,10 +1,7 @@
 package com.example.eindopdrachtbackend.dto.input;
 
 import com.example.eindopdrachtbackend.model.Comment;
-import com.example.eindopdrachtbackend.model.Genre;
-import com.example.eindopdrachtbackend.model.Publisher;
 import com.example.eindopdrachtbackend.model.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

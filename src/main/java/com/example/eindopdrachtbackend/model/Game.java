@@ -38,5 +38,7 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> listOfFavorites;
+    @OneToOne
+    private Image gameCover;
 
 }

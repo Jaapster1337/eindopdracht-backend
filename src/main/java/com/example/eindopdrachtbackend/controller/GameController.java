@@ -4,23 +4,31 @@ import com.example.eindopdrachtbackend.dto.input.GameInputDto;
 import com.example.eindopdrachtbackend.dto.input.IdInputDto;
 import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
+import com.example.eindopdrachtbackend.model.Game;
+import com.example.eindopdrachtbackend.model.Image;
 import com.example.eindopdrachtbackend.service.GameService;
+import com.example.eindopdrachtbackend.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/games")
 public class GameController {
 
     private final GameService gameService;
+    private final ImageService imageService;
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, ImageService imageService) {
         this.gameService = gameService;
+        this.imageService = imageService;
     }
 
     @PostMapping
@@ -69,6 +77,19 @@ public class GameController {
         Long longGenreId = genreId.id;
         gameService.assingGenreToGame(gameId, longGenreId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{gameId}/image")
+    public ResponseEntity<GameOutputDto> addImageToGame(@PathVariable Long gameId, @RequestBody MultipartFile file) throws IOException {
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/games/")
+                .path(Objects.requireNonNull(gameId.toString()))
+                .path("/image")
+                .toUriString();
+
+        Image image = imageService.storeFile(file, url);
+        GameOutputDto game = gameService.addImageToGame(gameId, image);
+        return ResponseEntity.created(URI.create(url)).body(game);
     }
 
     @DeleteMapping("/{id}")

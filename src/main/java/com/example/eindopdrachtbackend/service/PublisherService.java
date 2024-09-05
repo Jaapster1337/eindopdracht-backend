@@ -5,8 +5,10 @@ import com.example.eindopdrachtbackend.dto.mapper.PublisherMapper;
 import com.example.eindopdrachtbackend.dto.output.PublisherOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Game;
+import com.example.eindopdrachtbackend.model.Image;
 import com.example.eindopdrachtbackend.model.Publisher;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -76,5 +78,16 @@ public class PublisherService {
         }
     }
 
+    @Transactional
+    public PublisherOutputDto addImageToPublisher(Long pId, Image image){
+        Optional<Publisher> optionalPublisher = publisherRepository.findById(pId);
+        if (optionalPublisher.isEmpty()){
+            throw new RecordNotFoundException("Publisher with id "+pId+" not found");
+        }
+        Publisher publisher = optionalPublisher.get();
+        publisher.setPublisherLogo(image);
+        publisherRepository.save(publisher);
+        return PublisherMapper.fromModelToOutPutDto(publisher);
+    }
 
 }

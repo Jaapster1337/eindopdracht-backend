@@ -1,9 +1,5 @@
 package com.example.eindopdrachtbackend.dto.output;
 
-import com.example.eindopdrachtbackend.model.Comment;
-import com.example.eindopdrachtbackend.model.Genre;
-import com.example.eindopdrachtbackend.model.Publisher;
-import com.example.eindopdrachtbackend.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +15,5 @@ public class GameOutputDto {
     private Long likes;
     private List<CommentOutputDto> listOfComments;
     private int amountOfFavorites;
+    private ImageOutputDto gameCover;
 }

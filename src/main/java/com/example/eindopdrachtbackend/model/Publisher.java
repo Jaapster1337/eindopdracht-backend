@@ -22,4 +22,6 @@ public class Publisher {
     private String description;
     @OneToMany(mappedBy = "publisher", orphanRemoval = true)
     private List<Game> listOfGame;
+    @OneToOne
+    private Image publisherLogo;
 }
