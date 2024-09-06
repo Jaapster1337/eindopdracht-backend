@@ -38,6 +38,9 @@ public class PublisherMapper {
             gameOutputDtoList.add(gameMapper.fromModelToOutputDto(game));
         }
         publisherOutputDto.setListOfGame(gameOutputDtoList);
+        if(publisher.getPublisherLogo() != null){
+            publisherOutputDto.setPublisherLogo(ImageMapper.fromModelToOutputDto(publisher.getPublisherLogo()));
+        }
         return publisherOutputDto;
     }
 }

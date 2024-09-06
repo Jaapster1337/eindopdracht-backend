@@ -1,6 +1,7 @@
 package com.example.eindopdrachtbackend.dto.output;
 
 import com.example.eindopdrachtbackend.model.Game;
+import com.example.eindopdrachtbackend.model.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,5 @@ public class PublisherOutputDto {
     private LocalDate creationDate;
     private String description;
     private List<GameOutputDto> listOfGame;
+    private ImageOutputDto publisherLogo;
 }
