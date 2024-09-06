@@ -4,7 +4,6 @@ import com.example.eindopdrachtbackend.dto.input.GameInputDto;
 import com.example.eindopdrachtbackend.dto.input.IdInputDto;
 import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
-import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Image;
 import com.example.eindopdrachtbackend.service.GameService;
 import com.example.eindopdrachtbackend.service.ImageService;

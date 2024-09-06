@@ -46,9 +46,7 @@ public class GameService {
         Optional<Publisher> p = publisherRepository.findById(gameInputDto.getPublisherId());
 
         Game game = GameMapper.fromInputDtoToModel(gameInputDto);
-        if(p.isPresent()){
-            game.setPublisher(p.get());
-        }
+        p.ifPresent(game::setPublisher);
 
         List<Genre> genres = new ArrayList<>();
         for(Long genreId: gameInputDto.getGenreId()){
