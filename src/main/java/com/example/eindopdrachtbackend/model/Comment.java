@@ -2,6 +2,7 @@ package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class Comment {
     @NotBlank
     private String content;
     private LocalDate postDate;
+    @PositiveOrZero
     private Long amountOfLikes;
     @ManyToOne
     @JoinColumn(name = "game_id")

@@ -41,7 +41,10 @@ public class GameMapper {
         }
         gameOutputDto.setGenreId(genreIds);
         gameOutputDto.setLikes(game.getLikes());
-        gameOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(game.getListOfComments()));
+        if(game.getListOfComments() != null){
+            gameOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(game.getListOfComments()));
+
+        }
         gameOutputDto.setAmountOfFavorites(gameRepository.countUsersWhoFavoritedGame(game.getId()));
         if (game.getGameCover() != null) {
             gameOutputDto.setGameCover(ImageMapper.fromModelToOutputDto(game.getGameCover()));

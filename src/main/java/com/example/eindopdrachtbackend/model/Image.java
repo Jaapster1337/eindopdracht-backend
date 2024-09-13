@@ -1,6 +1,7 @@
 package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,9 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @NotBlank
     private String url;
+    @NotBlank
     private String contentType;
     @Lob
     private byte[] content;

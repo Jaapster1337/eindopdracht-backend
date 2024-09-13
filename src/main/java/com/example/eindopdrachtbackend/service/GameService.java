@@ -10,6 +10,7 @@ import com.example.eindopdrachtbackend.repository.GameRepository;
 import com.example.eindopdrachtbackend.repository.GenreRepository;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -42,7 +43,11 @@ public class GameService {
         return allGameOutputList;
     }
 
-    public GameOutputDto createGame(GameInputDto gameInputDto){
+    public long getGameCount(){
+        return gameRepository.count();
+    }
+
+    public GameOutputDto createGame(@Valid GameInputDto gameInputDto){
         Optional<Publisher> p = publisherRepository.findById(gameInputDto.getPublisherId());
 
         Game game = GameMapper.fromInputDtoToModel(gameInputDto);
@@ -68,7 +73,7 @@ public class GameService {
         }
     }
 
-    public GameOutputDto updateGame(long id, GameInputDto gameInputDto){
+    public GameOutputDto updateGame(@Valid long id, GameInputDto gameInputDto){
         Optional<Game> g = gameRepository.findById(id);
         if(g.isPresent()){
             Game game = g.get();
@@ -129,7 +134,7 @@ public class GameService {
         }
     }
 
-    public String assignPublisherToGame(Long gameId, Long publisherId){
+    public String assignPublisherToGame(@Valid Long gameId, Long publisherId){
         Optional<Game> g = gameRepository.findById(gameId);
         Optional<Publisher> p = publisherRepository.findById(publisherId);
         if(g.isPresent() && p.isPresent()){
@@ -175,7 +180,7 @@ public class GameService {
         }
     }
     @Transactional
-    public GameOutputDto addImageToGame(long gameId, Image image){
+    public GameOutputDto addImageToGame(@Valid long gameId, Image image){
         Optional<Game> optionalGame = gameRepository.findById(gameId);
         if(optionalGame.isEmpty()){
             throw new RecordNotFoundException("Game with id "+gameId+" not found");

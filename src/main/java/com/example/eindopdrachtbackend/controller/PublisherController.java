@@ -48,12 +48,12 @@ public class PublisherController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherOutputDto> updatePublisher(@PathVariable int id, @RequestBody PublisherInputDto publisher){
+    public ResponseEntity<PublisherOutputDto> updatePublisher(@Valid @PathVariable int id, @RequestBody PublisherInputDto publisher){
         return ResponseEntity.ok().body(publisherService.updatePublisher(id, publisher));
     }
 
     @PutMapping("/{pId}/image")
-    public ResponseEntity<PublisherOutputDto> addImageToPublisher(@PathVariable Long pId, @RequestBody MultipartFile file) throws IOException{
+    public ResponseEntity<PublisherOutputDto> addImageToPublisher(@Valid @PathVariable Long pId, @RequestBody MultipartFile file) throws IOException{
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/publishers/")
                 .path(Objects.requireNonNull(pId.toString()))

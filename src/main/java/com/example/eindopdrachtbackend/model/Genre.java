@@ -2,6 +2,7 @@ package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class Genre {
     @Column(unique = true)
     private String name;
     @NotEmpty
+    @Size(max = 100)
     private String description;
     @ManyToMany(mappedBy = "genre")
     private List<Game> listOfGames;

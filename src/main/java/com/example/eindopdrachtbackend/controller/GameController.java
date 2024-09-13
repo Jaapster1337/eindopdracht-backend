@@ -47,6 +47,13 @@ public class GameController {
         return ResponseEntity.ok().body(gameService.getGameById(id));
     }
 
+    @GetMapping("/random")
+    public GameOutputDto getRandomGame(){
+        long count = gameService.getGameCount();
+        long randomId = 1 +(long) (Math.random()*(count - 1));
+        return gameService.getGameById(randomId);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<GameOutputDto> updateGame(@PathVariable int id, @RequestBody GameInputDto game){
         return ResponseEntity.ok().body(gameService.updateGame(id, game));
@@ -58,28 +65,28 @@ public class GameController {
     }
 
     @PutMapping("/{gameId}/publisher")
-    public ResponseEntity<Void> assignPublisherToGame(@PathVariable Long gameId, @RequestBody IdInputDto publisherId){
+    public ResponseEntity<Void> assignPublisherToGame(@Valid @PathVariable Long gameId, @RequestBody IdInputDto publisherId){
         Long longPublisherId = publisherId.id;
         gameService.assignPublisherToGame(gameId, longPublisherId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{gameId}/comment")
-    public ResponseEntity<Void> assignCommentToGame(@PathVariable Long gameId, @RequestBody IdInputDto commentId){
+    public ResponseEntity<Void> assignCommentToGame(@Valid @PathVariable Long gameId, @RequestBody IdInputDto commentId){
         Long longCommentId = commentId.id;
         gameService.assignCommentToGame(gameId, longCommentId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{gameId}/genre")
-    public ResponseEntity<Void> assignGenreToGame(@PathVariable Long gameId, @RequestBody IdInputDto genreId){
+    public ResponseEntity<Void> assignGenreToGame(@Valid @PathVariable Long gameId, @RequestBody IdInputDto genreId){
         Long longGenreId = genreId.id;
         gameService.assingGenreToGame(gameId, longGenreId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{gameId}/image")
-    public ResponseEntity<GameOutputDto> addImageToGame(@PathVariable Long gameId, @RequestBody MultipartFile file) throws IOException {
+    public ResponseEntity<GameOutputDto> addImageToGame(@Valid @PathVariable Long gameId, @RequestBody MultipartFile file) throws IOException {
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/games/")
                 .path(Objects.requireNonNull(gameId.toString()))

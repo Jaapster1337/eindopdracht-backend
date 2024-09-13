@@ -4,6 +4,7 @@ import com.example.eindopdrachtbackend.dto.input.ImageInputDto;
 import com.example.eindopdrachtbackend.dto.output.ImageOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.service.ImageService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +18,13 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<ImageOutputDto> storeFile(@Valid @RequestBody ImageInputDto imageInputDto){
-//        ImageOutputDto imageOutputDto = imageService.storeFile(imageInputDto);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(imageOutputDto.getId()).toUri();
-//        return ResponseEntity.created(uri).body(imageOutputDto);
-//    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<ImageOutputDto> getImageById(@PathVariable int id) throws RecordNotFoundException{
+    public ResponseEntity<ImageOutputDto> getImageById(@Valid @PathVariable int id) throws RecordNotFoundException{
         return ResponseEntity.ok().body(imageService.getImageById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ImageOutputDto> updateImage(@PathVariable int id, @RequestBody ImageInputDto imageInputDto){
+    public ResponseEntity<ImageOutputDto> updateImage(@Valid @PathVariable int id, @RequestBody ImageInputDto imageInputDto){
         return ResponseEntity.ok().body(imageService.updateImage(id, imageInputDto));
     }
 
