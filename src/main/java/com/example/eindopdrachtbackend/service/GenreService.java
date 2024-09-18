@@ -34,7 +34,8 @@ public class GenreService {
     }
 
     public GenreOutputDto createGenre(@Valid GenreInputDto genreInputDto) {
-        Genre g = genreRepository.save(GenreMapper.fromInputDtoToModel(genreInputDto));
+        Genre temp = GenreMapper.fromInputDtoToModel(genreInputDto);
+        Genre g = genreRepository.save(temp);
         return GenreMapper.fromModelToOutputDto(g);
     }
 

@@ -31,11 +31,6 @@ public class ImageService{
         return imageRepository.save(image);
     }
 
-//    public ImageOutputDto createImage(ImageInputDto imageInputDto){
-//        Image i = imageRepository.save(ImageMapper.fromInputDtoToModel(imageInputDto));
-//        return ImageMapper.fromModelToOutputDto(i);
-//    }
-
     public ImageOutputDto getImageById(long id){
         Optional<Image> i = imageRepository.findById(id);
         if (i.isPresent()){
