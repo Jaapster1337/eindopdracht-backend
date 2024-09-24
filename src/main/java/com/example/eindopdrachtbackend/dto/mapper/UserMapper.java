@@ -25,8 +25,13 @@ public class UserMapper {
         userOutputDto.setEmail(user.getEmail());
         userOutputDto.setDescription(user.getDescription());
         userOutputDto.setAuthorities(user.getAuthorities());
-        userOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(user.getListOfComments()));
-        userOutputDto.setListOfFavorites(GameMapper.fromListToOutputDtoList(user.getListOfFavorites()));
+        if (user.getListOfComments() != null) {
+            userOutputDto.setListOfComments(CommentMapper.fromListToOutputDtoList(user.getListOfComments()));
+        }
+        if (user.getListOfFavorites() != null ) {
+            userOutputDto.setListOfFavorites(GameMapper.fromListToOutputDtoList(user.getListOfFavorites()));
+        }
+        userOutputDto.setPassword(user.getPassword());
         return userOutputDto;
     }
 

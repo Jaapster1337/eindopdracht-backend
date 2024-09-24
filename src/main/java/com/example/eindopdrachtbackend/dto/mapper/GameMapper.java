@@ -5,10 +5,10 @@ import com.example.eindopdrachtbackend.dto.output.GameOutputDto;
 import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Genre;
 import com.example.eindopdrachtbackend.repository.GameRepository;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 @Component

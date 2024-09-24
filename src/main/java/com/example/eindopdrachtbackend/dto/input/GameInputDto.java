@@ -4,6 +4,7 @@ import com.example.eindopdrachtbackend.model.Comment;
 import com.example.eindopdrachtbackend.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.List;
 public class GameInputDto {
     @NotEmpty
     private String name;
-    @NotBlank
+    @NotNull
     private Long publisherId;
     private List<Long> genreId;
     @PositiveOrZero

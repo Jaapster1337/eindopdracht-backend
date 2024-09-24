@@ -27,12 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userService = userService;
     }
 
-//    @Autowired
-//    private AuthorityService authorityService;
-
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserOutputDto userOutputDto = userService.getUserByUsername(username);
+        UserOutputDto userOutputDto = userService.getUserForSignIn(username);
 
 
         String password = userOutputDto.getPassword();

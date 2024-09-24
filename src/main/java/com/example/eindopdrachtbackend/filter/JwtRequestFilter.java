@@ -3,7 +3,6 @@ package com.example.eindopdrachtbackend.filter;
 
 import com.example.eindopdrachtbackend.service.CustomUserDetailsService;
 import com.example.eindopdrachtbackend.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

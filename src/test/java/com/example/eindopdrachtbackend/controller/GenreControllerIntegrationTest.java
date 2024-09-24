@@ -9,9 +9,7 @@ import com.example.eindopdrachtbackend.repository.GenreRepository;
 import com.example.eindopdrachtbackend.service.GenreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GenreControllerIntegrationTest {
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,76 +41,70 @@ class GenreControllerIntegrationTest {
 
     @Autowired
     private GenreService genreService;
+
     @Autowired
     private GenreRepository genreRepository;
+
     @Autowired
     private GameRepository gameRepository;
 
     private GenreInputDto genreInputDto;
-
     private Genre genre;
+    private Game game;
 
     @BeforeEach
     void setUp() {
-//        genre = new Genre();
-////        genre.setId(123L);
-//        genre.setName("moba");
-//        genre.setDescription("moba game");
-//        genre  = genreRepository.save(genre);
-////        genreRepository.flush();
-//        Game game = new Game();
-//        game.setName("game of life");
-//        game.setId(10L);
-//        List<Genre> genrelist = new ArrayList<>();
-//        genrelist.add(genre);
-//        game.setGenre(genrelist);
-//        game = gameRepository.save(game);
-////        gameRepository.flush();
-////        genre.setListOfGames(List.of(game));
-//        List<Game> gamelist = new ArrayList<>();
-//        gamelist.add(game);
-//        genre = genreRepository.save(genre);
-//        genreInputDto = new GenreInputDto();
-//        genreInputDto.setName("simulation");
-//        genreInputDto.setDescription("Hallo ik ben een genre");
-//
-//        genreInputDto.setListOfGames(gamelist);
+        genre = new Genre();
+        genre.setName("moba2");
+        genre.setDescription("moba game");
+        genre = genreRepository.save(genre);
 
-        // Create a genre
+        game = new Game();
+        game.setName("game of life");
+        game.setId(1L);
+        List<Genre> genreList = new ArrayList<>();
+        genreList.add(genre);
+        game.setGenre(genreList);
+        game = gameRepository.save(game);
+
+        List<Game> gameList = new ArrayList<>();
+        gameList.add(game);
+        genre = genreRepository.save(genre);
+
+        genreInputDto = new GenreInputDto();
+        genreInputDto.setName("simulation");
+        genreInputDto.setDescription("Hallo ik ben een genre");
+        genreInputDto.setListOfGames(gameList);
+
         genre = new Genre();
         genre.setName("moba");
         genre.setDescription("moba game");
 
-        // Create a game and associate it with the genre
-        Game game = new Game();
-        game.setName("game of life");
 
-        // Set the genre for the game
         List<Genre> genres = new ArrayList<>();
         genres.add(genre);
-        game.setGenre(genres);
 
-        // Add the game to the genre's list of games
+
         List<Game> games = new ArrayList<>();
         games.add(game);
         genre.setListOfGames(games);
 
-        // Save both entities
-        genre = genreRepository.save(genre);  // Saves the genre and cascades the game if configured
-        gameRepository.save(game);            // Alternatively, if cascading is not set
+        genre = genreRepository.save(genre);
+        gameRepository.save(game);
 
-        // Create the GenreInputDto for test cases
         genreInputDto = new GenreInputDto();
         genreInputDto.setName("simulation");
         genreInputDto.setDescription("Hallo ik ben een genre");
-        genreInputDto.setListOfGames(games);
-
+//        genreInputDto.setListOfGames(games);
     }
+
     @AfterEach
-    void tearDown(){
+    void tearDown() {
     }
 
     @Test
+    @Order(1)
+        // Create should be first
     void testCreateGenre() throws Exception {
         String genreInputDtoJson = objectMapper.writeValueAsString(genreInputDto);
 
@@ -128,20 +122,22 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @Order(2)
+        // Fetch all genres after creation
     void testGetAllGenres() throws Exception {
-        // First create a genre
         genreService.createGenre(genreInputDto);
 
         mockMvc.perform(get("/genres")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].name").value("moba"));
+                .andExpect(jsonPath("$[0].name").value("moba2"));
     }
 
     @Test
+    @Order(3)
+        // Fetch by ID
     void testGetGenreById() throws Exception {
-        // First create a genre and get its ID
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
 
         mockMvc.perform(get("/genres/{id}", createdGenre.getId())
@@ -152,17 +148,24 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @Order(4)
     void testUpdateGenre() throws Exception {
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
-        Game game2 = new Game();
-        Genre genre2 = new Genre();
 
-        GenreInputDto updatedGenre = new GenreInputDto();
-        game2.setGenre(List.of(genre2));
-        updatedGenre.setName("Updated Genre");
-        updatedGenre.setListOfGames(List.of(game2));
+        Genre newGenre = new Genre();
+        newGenre.setName("BANAAN");
+        newGenre.setDescription("KAAS");
 
-        String updatedGenreJson = objectMapper.writeValueAsString(updatedGenre);
+
+        newGenre = genreRepository.save(newGenre);
+
+
+        GenreInputDto updatedGenreDto = new GenreInputDto();
+        updatedGenreDto.setName("Updated Genre");
+        updatedGenreDto.setDescription("IK BEN EEN TEST");
+        updatedGenreDto.setListOfGames(List.of(game));
+
+        String updatedGenreJson = objectMapper.writeValueAsString(updatedGenreDto);
 
         mockMvc.perform(put("/genres/{id}", createdGenre.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -173,19 +176,21 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @Order(5)
+        // Delete comes last
     void testDeleteGenre() throws Exception {
-        // First create a genre and get its ID
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
 
         mockMvc.perform(delete("/genres/{id}", genre.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Genre with id 1 has been removed"));
+                .andExpect(content().string("Genre with id 15 has been removed"));
     }
 
     @Test
+    @Order(6)
+        // Error cases come last
     void testGetGenreById_NotFound() throws Exception {
-        // Try to get a genre that doesn't exist
         mockMvc.perform(get("/genres/{id}", 9999)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

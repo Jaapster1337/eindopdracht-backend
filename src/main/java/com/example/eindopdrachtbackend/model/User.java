@@ -34,8 +34,8 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
     private String description;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Comment> listOfComments;
-    @ManyToMany(mappedBy = "listOfFavorites")
+    @ManyToMany(mappedBy = "listOfFavorites", fetch = FetchType.EAGER)
     private List<Game> listOfFavorites;
 }

@@ -19,7 +19,9 @@ public class GenreMapper {
         genreOutputDto.setId(genre.getId());
         genreOutputDto.setName(genre.getName());
         genreOutputDto.setDescription(genre.getDescription());
-        genreOutputDto.setListOfGames(GameMapper.fromListToOutputDtoList(genre.getListOfGames()));
+        if (genre.getListOfGames() != null){
+            genreOutputDto.setListOfGames(GameMapper.fromListToOutputDtoList(genre.getListOfGames()));
+        }
         return genreOutputDto;
     }
 }
