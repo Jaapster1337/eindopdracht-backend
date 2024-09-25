@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -43,7 +44,7 @@ class ImageControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Set up test data
+
         imageInputDto = new ImageInputDto();
         imageInputDto.setUrl("http://example.com/test-image.jpg");
 
@@ -53,6 +54,7 @@ class ImageControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     void testGetImageById() throws Exception {
         when(imageService.getImageById(anyLong())).thenReturn(imageOutputDto);
 
@@ -71,6 +73,7 @@ class ImageControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     void testUpdateImage() throws Exception {
         when(imageService.updateImage(anyLong(), Mockito.any(ImageInputDto.class))).thenReturn(imageOutputDto);
 
@@ -85,6 +88,7 @@ class ImageControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     void testDeleteImage() throws Exception {
         when(imageService.deleteImage(anyLong())).thenReturn("Image deleted successfully");
 
@@ -95,6 +99,7 @@ class ImageControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     void testGetImageById_NotFound() throws Exception {
         when(imageService.getImageById(anyLong())).thenThrow(new RecordNotFoundException("Image not found"));
 

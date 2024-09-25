@@ -67,11 +67,6 @@ public class PublisherService {
     public String deletePublisher(long id){
         Optional<Publisher> p = publisherRepository.findById(id);
         if(p.isPresent()){
-            Publisher publisher = p.get();
-            List<Game> games = publisher.getListOfGame();
-            for(Game game : games){
-//                game.setPublisher(null);
-            }
             publisherRepository.delete(p.get());
             return "Publisher with id " + id + " has been removed";
         } else {

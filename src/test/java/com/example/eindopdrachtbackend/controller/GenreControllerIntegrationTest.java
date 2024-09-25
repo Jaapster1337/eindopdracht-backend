@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -95,7 +96,6 @@ class GenreControllerIntegrationTest {
         genreInputDto = new GenreInputDto();
         genreInputDto.setName("simulation");
         genreInputDto.setDescription("Hallo ik ben een genre");
-//        genreInputDto.setListOfGames(games);
     }
 
     @AfterEach
@@ -103,8 +103,8 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(1)
-        // Create should be first
     void testCreateGenre() throws Exception {
         String genreInputDtoJson = objectMapper.writeValueAsString(genreInputDto);
 
@@ -122,8 +122,8 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(2)
-        // Fetch all genres after creation
     void testGetAllGenres() throws Exception {
         genreService.createGenre(genreInputDto);
 
@@ -135,8 +135,8 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(3)
-        // Fetch by ID
     void testGetGenreById() throws Exception {
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
 
@@ -148,6 +148,7 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(4)
     void testUpdateGenre() throws Exception {
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
@@ -176,8 +177,8 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(5)
-        // Delete comes last
     void testDeleteGenre() throws Exception {
         GenreOutputDto createdGenre = genreService.createGenre(genreInputDto);
 
@@ -188,8 +189,8 @@ class GenreControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(username = "john_doe", authorities = {"ROLE_ADMIN"})
     @Order(6)
-        // Error cases come last
     void testGetGenreById_NotFound() throws Exception {
         mockMvc.perform(get("/genres/{id}", 9999)
                         .contentType(MediaType.APPLICATION_JSON))

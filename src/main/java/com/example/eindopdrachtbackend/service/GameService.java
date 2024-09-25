@@ -84,7 +84,6 @@ public class GameService {
             } else{
                 game.setPublisher(g.get().getPublisher());
             }
-            //check of InputDto genre heeft
             if(!gameInputDto.getGenreId().isEmpty()){
                 List<Genre> genreList = new ArrayList<>();
                 List<Long> genres = gameInputDto.getGenreId();

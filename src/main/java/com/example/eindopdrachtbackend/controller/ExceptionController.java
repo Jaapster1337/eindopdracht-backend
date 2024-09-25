@@ -17,9 +17,4 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(RecordNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> exception(MethodArgumentNotValidException exception) {
-        return new ResponseEntity<>(exception.getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getField() + " " + fieldError.getDefaultMessage()).collect(Collectors.toList()), HttpStatus.BAD_REQUEST);
-    }
 }
