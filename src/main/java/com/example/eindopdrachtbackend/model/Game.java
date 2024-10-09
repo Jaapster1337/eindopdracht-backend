@@ -1,7 +1,9 @@
 package com.example.eindopdrachtbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +30,7 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private List<Genre> genre;
+    @PositiveOrZero
     private Long likes;
     @OneToMany(mappedBy = "game")
     private List<Comment> listOfComments;

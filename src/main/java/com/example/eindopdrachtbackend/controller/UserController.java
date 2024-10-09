@@ -37,17 +37,17 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserProfileDto> getUserByUsername(@PathVariable String username) throws RecordNotFoundException{
+    public ResponseEntity<UserProfileDto> getUserByUsername(@Valid @PathVariable String username) throws RecordNotFoundException{
         return ResponseEntity.ok().body(userService.getUserByUsername(username, true));
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<UserSelfProfileDto> updateUser(@PathVariable String username, @RequestBody UserInputDto user){
+    public ResponseEntity<UserSelfProfileDto> updateUser(@Valid @PathVariable String username, @RequestBody UserInputDto user){
         return ResponseEntity.ok().body(userService.updateTv(username, user));
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteUser(@PathVariable String username){
+    public ResponseEntity<String> deleteUser(@Valid @PathVariable String username){
         return ResponseEntity.ok().body(userService.deleteUser(username));
     }
 }

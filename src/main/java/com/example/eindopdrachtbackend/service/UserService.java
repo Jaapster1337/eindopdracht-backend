@@ -9,12 +9,14 @@ import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.User;
 import com.example.eindopdrachtbackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -36,6 +38,15 @@ public class UserService {
     public UserOutputDto createUser(UserInputDto userInputDto) {
         User u = userRepository.save(UserMapper.fromInputDtoToModel(userInputDto));
         return UserMapper.fromModelToOutputDto(u);
+    }
+
+    public UserOutputDto getUserForSignIn(String username){
+        Optional<User> u = userRepository.findUserByUsername(username);
+        if (u.isEmpty()){
+            throw new RecordNotFoundException("No user with " + username + " as username was found." );
+        } else {
+            return UserMapper.fromModelToOutputDto(u.get());
+        }
     }
 
     public UserProfileDto getUserByUsername(String username, boolean auth) {

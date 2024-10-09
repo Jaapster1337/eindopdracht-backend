@@ -7,6 +7,7 @@ import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Game;
 import com.example.eindopdrachtbackend.model.Genre;
 import com.example.eindopdrachtbackend.repository.GenreRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ public class GenreService {
         return allGenresOutputList;
     }
 
-    public GenreOutputDto createGenre(GenreInputDto genreInputDto) {
-        Genre g = genreRepository.save(GenreMapper.fromInputDtoToModel(genreInputDto));
+    public GenreOutputDto createGenre(@Valid GenreInputDto genreInputDto) {
+        Genre temp = GenreMapper.fromInputDtoToModel(genreInputDto);
+        Genre g = genreRepository.save(temp);
         return GenreMapper.fromModelToOutputDto(g);
     }
 
@@ -46,7 +48,7 @@ public class GenreService {
         }
     }
 
-    public GenreOutputDto updateGenre(long id, GenreInputDto genreInputDto) {
+    public GenreOutputDto updateGenre(@Valid long id, GenreInputDto genreInputDto) {
         Optional<Genre> g = genreRepository.findById(id);
         if (g.isPresent()) {
             Genre genre = g.get();

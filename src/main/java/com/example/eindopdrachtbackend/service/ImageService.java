@@ -6,6 +6,7 @@ import com.example.eindopdrachtbackend.dto.output.ImageOutputDto;
 import com.example.eindopdrachtbackend.exception.RecordNotFoundException;
 import com.example.eindopdrachtbackend.model.Image;
 import com.example.eindopdrachtbackend.repository.ImageRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,11 +31,6 @@ public class ImageService{
         return imageRepository.save(image);
     }
 
-//    public ImageOutputDto createImage(ImageInputDto imageInputDto){
-//        Image i = imageRepository.save(ImageMapper.fromInputDtoToModel(imageInputDto));
-//        return ImageMapper.fromModelToOutputDto(i);
-//    }
-
     public ImageOutputDto getImageById(long id){
         Optional<Image> i = imageRepository.findById(id);
         if (i.isPresent()){
@@ -44,7 +40,7 @@ public class ImageService{
         }
     }
 
-    public ImageOutputDto updateImage(long id, ImageInputDto imageInputDto){
+    public ImageOutputDto updateImage(@Valid long id, ImageInputDto imageInputDto){
         Optional<Image> i = imageRepository.findById(id);
         if(i.isPresent()){
             Image image = i.get();

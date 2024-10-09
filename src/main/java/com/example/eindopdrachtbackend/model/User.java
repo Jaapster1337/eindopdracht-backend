@@ -1,6 +1,9 @@
 package com.example.eindopdrachtbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +18,13 @@ import java.util.Set;
 public class User {
     @Id
     @Column(nullable = false, unique = true)
+    @NotBlank
     private String username;
+    @NotBlank
     @Column(nullable = false, length = 255)
+    @Size(min = 8)
     private String password;
+    @Email(message = "Please enter a valid email")
     private String email;
     @OneToMany(
             targetEntity = Authority.class,
@@ -27,8 +34,8 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
     private String description;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Comment> listOfComments;
-    @ManyToMany(mappedBy = "listOfFavorites")
+    @ManyToMany(mappedBy = "listOfFavorites", fetch = FetchType.EAGER)
     private List<Game> listOfFavorites;
 }

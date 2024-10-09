@@ -9,6 +9,7 @@ import com.example.eindopdrachtbackend.model.Image;
 import com.example.eindopdrachtbackend.model.Publisher;
 import com.example.eindopdrachtbackend.repository.PublisherRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class PublisherService {
         return allPublisherOutputList;
     }
 
-    public PublisherOutputDto createPublisher(PublisherInputDto publisherInputDto){
+    public PublisherOutputDto createPublisher(@Valid PublisherInputDto publisherInputDto){
         Publisher p = publisherRepository.save(PublisherMapper.fromInputDtoToModel(publisherInputDto));
         return PublisherMapper.fromModelToOutPutDto(p);
     }
@@ -48,7 +49,7 @@ public class PublisherService {
         }
     }
 
-    public PublisherOutputDto updatePublisher(long id, PublisherInputDto publisherInputDto){
+    public PublisherOutputDto updatePublisher(@Valid long id, PublisherInputDto publisherInputDto){
         Optional<Publisher> p = publisherRepository.findById(id);
         if(p.isPresent()) {
            Publisher publisher = p.get();
@@ -66,11 +67,6 @@ public class PublisherService {
     public String deletePublisher(long id){
         Optional<Publisher> p = publisherRepository.findById(id);
         if(p.isPresent()){
-            Publisher publisher = p.get();
-            List<Game> games = publisher.getListOfGame();
-            for(Game game : games){
-//                game.setPublisher(null);
-            }
             publisherRepository.delete(p.get());
             return "Publisher with id " + id + " has been removed";
         } else {
@@ -79,7 +75,7 @@ public class PublisherService {
     }
 
     @Transactional
-    public PublisherOutputDto addImageToPublisher(Long pId, Image image){
+    public PublisherOutputDto addImageToPublisher(@Valid Long pId, Image image){
         Optional<Publisher> optionalPublisher = publisherRepository.findById(pId);
         if (optionalPublisher.isEmpty()){
             throw new RecordNotFoundException("Publisher with id "+pId+" not found");
